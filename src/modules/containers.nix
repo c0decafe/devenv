@@ -38,7 +38,7 @@ let
   group = "user";
   uid = "1000";
   gid = "1000";
-  homeDir = "/env";
+  homeDir = "/app/data";
 
   mkHome = path: (pkgs.runCommand "devenv-container-home" { } ''
     mkdir -p $out${homeDir}
@@ -144,8 +144,8 @@ let
 
     config = {
       Entrypoint = cfg.entrypoint;
-      User = "${user}";
-      WorkingDir = "${homeDir}";
+      User = "root";
+      WorkingDir = "/run";
       Env = lib.mapAttrsToList
         (name: value:
           "${name}=${toString value}"
