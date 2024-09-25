@@ -116,8 +116,8 @@ in
       "devenv:enterShell" = {
         description = "Runs when entering the shell";
         exec = ''
-          echo "$DEVENV_TASK_ENV" > "$DEVENV_DOTFILE/load-exports"
-          chmod +x "$DEVENV_DOTFILE/load-exports"
+          echo "$DEVENV_TASK_ENV" > "$DEVENV_RUNTIME/load-exports"
+          chmod +x "$DEVENV_RUNTIME/load-exports"
         '';
       };
       "devenv:enterTest" = {
@@ -126,8 +126,8 @@ in
     };
     enterShell = ''
       ${devenv}/bin/tasks run devenv:enterShell
-      if [ -f "$DEVENV_DOTFILE/load-exports" ]; then
-        source "$DEVENV_DOTFILE/load-exports"
+      if [ -f "$DEVENV_RUNTIME/load-exports" ]; then
+        source "$DEVENV_RUNTIME/load-exports"
       fi
     '';
     enterTest = ''
