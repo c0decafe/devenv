@@ -145,7 +145,7 @@ let
     config = {
       Entrypoint = cfg.entrypoint;
       User = "root";
-      WorkingDir = "/run";
+      WorkingDir = "${homeDir}";
       Env = lib.mapAttrsToList
         (name: value:
           "${name}=${toString value}"
