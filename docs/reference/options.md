@@ -939,6 +939,11 @@ What caches to pull from.
 *Type:*
 list of string
 
+
+
+*Default:*
+` [ ] `
+
 *Declared by:*
  - [https://github.com/cachix/devenv/blob/main/src/modules/cachix.nix](https://github.com/cachix/devenv/blob/main/src/modules/cachix.nix)
 
@@ -1818,7 +1823,7 @@ string
 
 
 *Default:*
-` "1.1.0" `
+` "1.2.0" `
 
 *Declared by:*
  - [https://github.com/cachix/devenv/blob/main/src/modules/update-check.nix](https://github.com/cachix/devenv/blob/main/src/modules/update-check.nix)
@@ -3240,7 +3245,7 @@ package
 
 
 *Default:*
-` pkgs.nodejs `
+` languages.javascript.package `
 
 *Declared by:*
  - [https://github.com/cachix/devenv/blob/main/src/modules/languages/javascript.nix](https://github.com/cachix/devenv/blob/main/src/modules/languages/javascript.nix)
@@ -7266,6 +7271,10 @@ One CLI to format the code tree.
 **` trim-trailing-whitespace `**
 
 Trim trailing whitespace.
+
+**` trufflehog `**
+
+Secrets scanner
 
 **` typos `**
 
@@ -41488,7 +41497,7 @@ package
 
 
 
-This option has no description.
+A set of tasks.
 
 
 
@@ -41522,6 +41531,27 @@ package
 
 
 ## tasks.\<name>.after
+
+
+
+List of tasks to run after this task.
+
+
+
+*Type:*
+list of string
+
+
+
+*Default:*
+` [ ] `
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/tasks.nix](https://github.com/cachix/devenv/blob/main/src/modules/tasks.nix)
+
+
+
+## tasks.\<name>.before
 
 
 

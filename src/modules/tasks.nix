@@ -57,9 +57,11 @@ let
               description = config.description;
               status = config.statusCommand;
               after = config.after;
+              before = config.before;
               command = config.command;
               input = config.input;
             };
+            description = "Internal configuration for the task.";
           };
           exports = lib.mkOption {
             type = types.listOf types.str;
@@ -72,6 +74,11 @@ let
             description = "Description of the task.";
           };
           after = lib.mkOption {
+            type = types.listOf types.str;
+            description = "List of tasks to run after this task.";
+            default = [ ];
+          };
+          before = lib.mkOption {
             type = types.listOf types.str;
             description = "List of tasks to run before this task.";
             default = [ ];
@@ -86,13 +93,17 @@ let
   tasksJSON = (lib.mapAttrsToList (name: value: { inherit name; } // value.config) config.tasks);
 in
 {
-  options.tasks = lib.mkOption {
-    type = types.attrsOf taskType;
-  };
+  options = {
+    tasks = lib.mkOption {
+      type = types.attrsOf taskType;
+      description = "A set of tasks.";
+    };
 
-  options.task.config = lib.mkOption {
-    type = types.package;
-    internal = true;
+    task.config = lib.mkOption {
+      type = types.package;
+      internal = true;
+      description = "The generated tasks.json file.";
+    };
   };
 
   config = {
@@ -116,6 +127,7 @@ in
       "devenv:enterShell" = {
         description = "Runs when entering the shell";
         exec = ''
+          mkdir -p "$DEVENV_DOTFILE"
           echo "$DEVENV_TASK_ENV" > "$DEVENV_DOTFILE/load-exports"
           chmod +x "$DEVENV_DOTFILE/load-exports"
         '';
