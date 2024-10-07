@@ -1823,7 +1823,7 @@ string
 
 
 *Default:*
-` "1.2.0" `
+` "1.3.0" `
 
 *Declared by:*
  - [https://github.com/cachix/devenv/blob/main/src/modules/update-check.nix](https://github.com/cachix/devenv/blob/main/src/modules/update-check.nix)
@@ -5226,6 +5226,53 @@ package
 
 
 
+## languages.r.radian.enable
+
+
+
+Whether to enable a 21 century R console.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+` false `
+
+
+
+*Example:*
+` true `
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/languages/r.nix](https://github.com/cachix/devenv/blob/main/src/modules/languages/r.nix)
+
+
+
+## languages.r.radian.package
+
+
+
+The radian package to use.
+
+
+
+*Type:*
+package
+
+
+
+*Default:*
+` pkgs.radianWrapper `
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/languages/r.nix](https://github.com/cachix/devenv/blob/main/src/modules/languages/r.nix)
+
+
+
 ## languages.racket.enable
 
 
@@ -7675,8 +7722,6 @@ list of (one of “commit-msg”, “post-checkout”, “post-commit”, “pos
 
 ## pre-commit.hooks.\<name>.types
 
-
-
 List of file types to run on. See [Filtering files with types](https://pre-commit.com/\#filtering-files-with-types).
 
 
@@ -7721,6 +7766,8 @@ list of string
 
 
 ## pre-commit.hooks.\<name>.verbose
+
+
 
 forces the output of the hook to be printed even when the hook passes.
 
@@ -34922,7 +34969,7 @@ lazy attribute set of (null or package)
 
 
 
-## process.after
+## process.manager.after
 
 
 
@@ -34943,7 +34990,23 @@ strings concatenated with “\\n”
 
 
 
-## process.before
+## process.manager.args
+
+
+
+Additional arguments to pass to the process manager.
+
+
+
+*Type:*
+attribute set
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/processes.nix](https://github.com/cachix/devenv/blob/main/src/modules/processes.nix)
+
+
+
+## process.manager.before
 
 
 
@@ -34964,16 +35027,16 @@ strings concatenated with “\\n”
 
 
 
-## process.implementation
+## process.manager.implementation
 
 
 
-The implementation used when performing ` devenv up `.
+The process manager to use when running processes with ` devenv up `.
 
 
 
 *Type:*
-one of “honcho”, “overmind”, “process-compose”, “hivemind”
+one of “hivemind”, “honcho”, “overmind”, “process-compose”
 
 
 
@@ -34990,74 +35053,7 @@ one of “honcho”, “overmind”, “process-compose”, “hivemind”
 
 
 
-## process.process-compose
-
-
-
-Top-level process-compose.yaml options when that implementation is used.
-
-
-
-*Type:*
-attribute set
-
-
-
-*Default:*
-
-```
-{
-  version = "0.5";
-  unix-socket = "${config.devenv.runtime}/pc.sock";
-  tui = true;
-}
-
-```
-
-
-
-*Example:*
-
-```
-{
-  log_level = "fatal";
-  log_location = "/path/to/combined/output/logfile.log";
-  version = "0.5";
-}
-```
-
-*Declared by:*
- - [https://github.com/cachix/devenv/blob/main/src/modules/processes.nix](https://github.com/cachix/devenv/blob/main/src/modules/processes.nix)
-
-
-
-## process-managers.hivemind.enable
-
-
-
-Whether to enable hivemind as process-manager.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-` false `
-
-
-
-*Example:*
-` true `
-
-*Declared by:*
- - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/hivemind.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/hivemind.nix)
-
-
-
-## process-managers.hivemind.package
+## process.managers.hivemind.package
 
 
 
@@ -35078,33 +35074,7 @@ package
 
 
 
-## process-managers.honcho.enable
-
-
-
-Whether to enable honcho as process-manager.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-` false `
-
-
-
-*Example:*
-` true `
-
-*Declared by:*
- - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/honcho.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/honcho.nix)
-
-
-
-## process-managers.honcho.package
+## process.managers.honcho.package
 
 
 
@@ -35125,33 +35095,7 @@ package
 
 
 
-## process-managers.overmind.enable
-
-
-
-Whether to enable overmind as process-manager.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-` false `
-
-
-
-*Example:*
-` true `
-
-*Declared by:*
- - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/overmind.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/overmind.nix)
-
-
-
-## process-managers.overmind.package
+## process.managers.overmind.package
 
 
 
@@ -35172,33 +35116,7 @@ package
 
 
 
-## process-managers.process-compose.enable
-
-
-
-Whether to enable process-compose as process-manager.
-
-
-
-*Type:*
-boolean
-
-
-
-*Default:*
-` false `
-
-
-
-*Example:*
-` true `
-
-*Declared by:*
- - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix)
-
-
-
-## process-managers.process-compose.package
+## process.managers.process-compose.package
 
 
 
@@ -35219,11 +35137,34 @@ package
 
 
 
-## process-managers.process-compose.settings
+## process.managers.process-compose.port
 
 
 
-process-compose.yaml specific process attributes.
+The port to bind the process-compose server to.
+
+Not used when ` unixSocket.enable ` is true.
+
+
+
+*Type:*
+signed integer
+
+
+
+*Default:*
+` 8080 `
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix)
+
+
+
+## process.managers.process-compose.settings
+
+
+
+Top-level process-compose.yaml options
 
 Example: https://github.com/F1bonacc1/process-compose/blob/main/process-compose.yaml\`
 
@@ -35264,11 +35205,79 @@ YAML value
 
 
 
+## process.managers.process-compose.tui.enable
+
+
+
+Enable the TUI (Terminal User Interface)
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+` true `
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix)
+
+
+
+## process.managers.process-compose.unixSocket.enable
+
+
+
+Whether to enable running the process-compose server over unix domain sockets instead of tcp.
+
+
+
+*Type:*
+boolean
+
+
+
+*Default:*
+` true `
+
+
+
+*Example:*
+` true `
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix)
+
+
+
+## process.managers.process-compose.unixSocket.path
+
+
+
+Override the path to the unix socket.
+
+
+
+*Type:*
+string
+
+
+
+*Default:*
+` ${config.devenv.runtime}/pc.sock `
+
+*Declared by:*
+ - [https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix](https://github.com/cachix/devenv/blob/main/src/modules/process-managers/process-compose.nix)
+
+
+
 ## processes
 
 
 
-Processes can be started with ` devenv up ` and run in foreground mode.
+Processes can be started with ` devenv up ` and run in the foreground.
 
 
 
@@ -35309,7 +35318,7 @@ process-compose.yaml specific process attributes.
 
 Example: https://github.com/F1bonacc1/process-compose/blob/main/process-compose.yaml\`
 
-Only used when using ` process.implementation = "process-compose"; `
+Only used when using ` process.manager.implementation = "process-compose"; `
 
 
 
