@@ -102,7 +102,7 @@
   };
   scripts."devenv-generate-doc-css" = {
     description = "Generate CSS for the docs.";
-    exec = "${lib.getExe pkgs.tailwindcss} build -i docs/assets/extra.css -o docs/assets/output.css";
+    exec = "${lib.getExe pkgs.tailwindcss} -m -i docs/assets/extra.css -o docs/assets/output.css";
   };
   scripts."devenv-generate-doc-options" = {
     description = "Generate option docs.";
@@ -154,7 +154,7 @@
     exec = ''
       mkdir -p docs/{supported-languages,supported-services,supported-process-managers}
 
-      nix build --impure --extra-experimental-features 'flakes nix-command' --show-trace --print-out-paths '.#devenv-generate-individual-docs'
+      nix build --no-pure-eval --extra-experimental-features 'flakes nix-command' --show-trace --print-out-paths '.#devenv-generate-individual-docs'
       cp -r --no-preserve=all result/docs/individual-docs/* docs/
     '';
   };
@@ -215,12 +215,26 @@ EOF
     '';
   };
 
+  tasks = {
+    "devenv:compile-requirements" = {
+      exec = "uv pip compile requirements.in -o requirements.txt";
+      before = [ "devenv:python:virtualenv" ];
+      status = ''
+        get_last_modified() {
+          stat -c %Y $1 2>/dev/null || stat -f %m $1 2>/dev/null || echo 0
+        }
+        input=$(get_last_modified "requirements.in")
+        output=$(get_last_modified "requirements.txt")
+        if [[ $output -eq 0 || $input -gt $output ]]; then
+          exit 1
+        fi
+      '';
+    };
+  };
+
   pre-commit.hooks = {
     nixpkgs-fmt.enable = true;
-    #shellcheck.enable = true;
-    #clippy.enable = true;
     rustfmt.enable = true;
-    #markdownlint.enable = true;
     markdownlint.settings.configuration = {
       MD013 = {
         line_length = 120;
@@ -231,10 +245,8 @@ EOF
     generate-doc-css = {
       enable = true;
       name = "generate-doc-css";
-      # In CI, the auto-commit action doesn't run in the shell, so it can't reuse our scripts.
-      # And the following command is curently too slow to be a pre-commit command.
-      # entry = "devenv shell devenv-generate-doc-css";
       entry = config.scripts."devenv-generate-doc-css".exec;
+      files = "docs/assets/extra.css";
     };
   };
 }
