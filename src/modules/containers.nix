@@ -38,7 +38,7 @@ let
   group = "user";
   uid = "1000";
   gid = "1000";
-  homeDir = "/env";
+  homeDir = "/app/data";
 
   mkHome = path: (pkgs.runCommand "devenv-container-home" { } ''
     mkdir -p $out${homeDir}
