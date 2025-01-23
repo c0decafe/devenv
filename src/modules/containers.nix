@@ -59,7 +59,7 @@ let
 
   mkEtc = pkgs.dockerTools.fakeNss.override {
     extraPasswdLines = [
-      "${user}:x:${uid}:${gid}:${user}:${home}:${shell}"
+      "${user}:x:${uid}:${gid}:${user}:${homeDir}:${shell}"
     ];
     extraGroupLines = [
       "${group}:!:${gid}:"
