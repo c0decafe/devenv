@@ -57,29 +57,14 @@ let
     mkdir -p $out/tmp
   '');
 
-  mkEtc = (pkgs.runCommand "devenv-container-etc" { } ''
-    mkdir -p $out/etc/pam.d
-
-    echo "root:x:0:0:System administrator:/root:${bash}" > \
-          $out/etc/passwd
-    echo "${user}:x:${uid}:${gid}::${homeDir}:${bash}" >> \
-          $out/etc/passwd
-
-    echo "root:!x:::::::" > $out/etc/shadow
-    echo "${user}:!x:::::::" >> $out/etc/shadow
-
-    echo "root:x:0:" > $out/etc/group
-    echo "${group}:x:${gid}:" >> $out/etc/group
-
-    cat > $out/etc/pam.d/other <<EOF
-    account sufficient pam_unix.so
-    auth sufficient pam_rootok.so
-    password requisite pam_unix.so nullok sha512
-    session required pam_unix.so
-    EOF
-
-    touch $out/etc/login.defs
-  '');
+  mkEtc = pkgs.dockerTools.fakeNss.override {
+    extraPasswdLines = [
+      "${user}:x:${uid}:${gid}:${user}:${home}:${shell}"
+    ];
+    extraGroupLines = [
+      "${group}:!:${gid}:"
+    ];
+  };
 
   mkPerm = derivation:
     {
